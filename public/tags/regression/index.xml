@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>regression on Yuanxi Gong&#39;s website</title>
+    <link>/tags/regression/</link>
+    <description>Recent content in regression on Yuanxi Gong&#39;s website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Jul 2020 21:13:14 -0500</lastBuildDate><atom:link href="/tags/regression/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The finding of income level in different provinces in Canada</title>
+      <link>/2020/07/23/the-finding-of-income-level-in-different-provinces-in-canada/</link>
+      <pubDate>Thu, 23 Jul 2020 21:13:14 -0500</pubDate>
+      
+      <guid>/2020/07/23/the-finding-of-income-level-in-different-provinces-in-canada/</guid>
+      <description>author: Yuanxi Gong  abstract We want to campare income level in different provinces. We use methods like graph and analyzing data. The key result is median income values can represnt living standard better tan mean income values. The conclusion is that people have different income levels in different provinces.
+ I. Introduction we use Wickham et al. (2019)
+Canadian Election Study Dataset includes 2019 Canadian Election Study which provides record of Canadian society and political life.</description>
+    </item>
+    
+  </channel>
+</rss>

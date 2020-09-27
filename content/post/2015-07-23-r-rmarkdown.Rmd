@@ -1,0 +1,95 @@
+---
+title: "The finding of income level in different provinces in Canada"
+author: "Yuanxi Gong"
+date: 2020-07-23T21:13:14-05:00
+bibliography: "references.bib"
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+#install.packages("devtools")
+#devtools::install_github("hodgettsp/cesR")
+
+library(cesR)
+library(devtools)
+library(labelled)
+library(dplyr)
+library(ggplot2)
+```
+
+## author: Yuanxi Gong
+
+# abstract
+We want to campare income level in different provinces. We use methods like graph and analyzing data. The key result is median income values can represnt living standard better tan mean income values. The conclusion is that people have different income levels in different provinces.
+
+
+# I. Introduction
+
+we use @citetidyverse
+
+Canadian Election Study Dataset includes 2019 Canadian Election Study which provides record of Canadian society and political life. We select 2 variables(province_territory,income) from 22 variables. By analyzing data, we aim to know more information about income in different provinces.We have some majors specific finding. Citizens in different provinces have different income levels. The value of mean income can not represent income level and living standard in those provinces since there are many outliers on the graph.As a result, the median income values seems to be more representative of Canadians' income level than mean income values. 
+
+We make boxplots about income level in each province and territory. From the boxplots, we find that Yukon has the highest median income values while Prince Edward Island has the lowest median income value.What's more, Yukon, Nunavut and Northwest Territories have wealth gap since they have large IQR. That is to say, there is a huge income difference between the poor and the rich in these provinces and territories. We also use calculate the mean income value and median income value for each each province and territory. We find that all the provinces expect Yukon have higher mean income value than  median income value. The boxplots also show right skewed distribution in those provinces.
+
+We find some weaknesses. First, the sample size is not big enough to represent the whole population in Canada. Also, some people fail to respond our survey, which creates some missing values in our data. What's more, some people may give inaccurate response since there are outliers in our data. So, in the future, we should increase our data size to make it becomes more representative of he whole population in Canada. Also, we can make some phone surveys to avoid non-response of the surveys. We should ignore some extreme values when analyzing data. In this way, we will get accurate and representative results.
+
+# II.Data
+Canadian Election Study Dataset includes 2019 Canadian Election Study which provides record of Canadian society and political life. We get the our dataset(decon) from Canadian Election Study Dataset and it includes 22 variables.
+
+## variables we focus on
+
+We select 2 variables(province_territory,income) from 22 variables. The province_territory variable shows the provinces or territories of Canadians who are investigated. The income variable shows the total 2018 household income (before tax) of ecah Canadian who is investigated. 
+
+## summary statistics for variables
+
+We want to know if people have different income levels in different provinces or territories. We first filter the data which is not missing and less than 1000000 Canadian dollar to avoid extreme observations. Then we calculate mean values and median values of income according to different provinces or territories.In Northwest Territories, the mean income is about 105409.09 Canadian dollar while the median income is 90000 Canadian dollar. In Nunavut, the mean income is about 104122.67 Canadian dollar while the median income is 89000 Canadian dollar.In Alberta, the mean income is about 91538.78	Canadian dollar while the median income is 78000 Canadian dollar.In Newfoundland and Labrador, the mean income is about 89453.32	Canadian dollar while the median income is 74000 Canadian dollar.In Ontario, the mean income is about 87626.51Canadian dollar while the median income is 75000 Canadian dollar.In Saskatchewan, the mean income is about 84133.44 Canadian dollar while the median income is 74000 Canadian dollar.In British Columbia, the mean income is about 83395.55	Canadian dollar while the median income is 72000 Canadian dollar.In Manitoba, the mean income is about 80976.51	Canadian dollar while the median income is 70000 Canadian dollar. In Quebec, the mean income is about 77868.37	Canadian dollar while the median income is 65000 Canadian dollar.In Nova Scotia, the mean income is about 75633.66 Canadian dollar while the median income is 65000 Canadian dollar. In New Brunswick, the mean income is about 75486.46 Canadian dollar while the median income is 65000 Canadian dollar.In Yukon, the mean income is about 75105.31 Canadian dollar while the median income is 85000 Canadian dollar.In Prince Edward Island, the mean income is about 72286.12 Canadian dollar while the median income is 55000 Canadian dollar.
+
+
+## information of the graph
+We can get some information through the boxplots. There are many outliers on the graph. The IQR of income is very large in provinces and territories like Yukon, Nunavut and Northwest Territories. Yukon has the highest medain income values in all the provinces. Alberta and Northwest Territories also has high median income values. While Prince Edward Island has the lowest median income value. From the boxplots, we find that only the distribution of income level in Yukon is left skewed. The distributions of income level in other provinces and territories are right skewed.
+
+
+```{r,result="hide", echo=FALSE, message=FALSE}
+get_decon()
+head(decon) 
+decon_data <- 
+  decon %>% 
+  filter(income < 1000000)%>% 
+  filter(!is.na(income))
+decon_data1<-decon_data%>%select(province_territory,income)
+decon_data1
+decon_data1 %>% 
+  ggplot(aes(x = province_territory, y = income)) + geom_boxplot() + labs(title="Boxplots of income level in different provinces", x ="province", y = "Income ($)") + coord_flip()
+
+decon_data1 %>% summarise(mean_income=mean(income),median_income=median(income),sd_income=sd(income))
+
+decon_data1 %>%filter(!is.na(province_territory))%>%group_by(province_territory)%>%summarise(mean_income=mean(income),median_income=median(income))%>%arrange(desc(mean_income))
+
+```
+# III.Discussion
+
+## Conclusion through the graph and data
+We can make some conclusions through the graph. The value of mean income can not represent income level and living standard in those provinces since there are many outliers on the graph. A few people who have high salary in those provinces raise the mean total income. So, the mean income values are larger than median income values in most provinces and territories. As a result, the median income values seems to be more representative of Canadians' income level than mean income values. Citizens in different provinces have different income level. When looking at median income values, Yukon has the highest median income values while Prince Edward Island has the lowest median income value. That is to say, citizens in Yukon are more likely have higher living standard. What's more, Yukon, Nunavut and Northwest Territories have wealth gap since they have large IQR. That is to say, there is a huge income difference between the poor and the rich in these provinces and territories. From the data, we can find that the median income values in provinces like New Brunswick, Prince Edward Island, Manitoba, Quebec, Nova Scotia are smaller than median of total income value.
+
+## weakness 
+We can find many missing values in our data. That is to say, some people fail to respond our survey. Our data can only represent citizens who finish the survey. So, our data may not be representative of whole population. Also, we can find many outliers in our data, so some people may give inaccurate response. This will influence the accuracy of the result. What's more, the sample size is not big enough to represent the whole population in Canada.
+
+# IV.References
+-Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686,
+  https://doi.org/10.21105/joss.01686
+-Joseph Larmarange (2020). labelled: Manipulating Labelled Data. R package version 2.6.0.
+  https://CRAN.R-project.org/package=labelled 
+-Hadley Wickham, Jim Hester and Winston Chang (2020). devtools: Tools to Make Developing R
+  Packages Easier. R package version 2.3.1. https://CRAN.R-project.org/package=devtools
+-R Core Team (2020). R: A language and environment for statistical computing. R, Foundation for Statistical Computing, Vienna, Austria. URL, https://www.R-project.org/.
+-Paul A. Hodgetts and Rohan Alexander (2020). cesR: Access the CES Datasets a Little Easier.. R
+  package version 0.1.0.
+-JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron
+  Atkins and Hadley Wickham and Joe Cheng and Winston Chang and Richard Iannone (2020). rmarkdown:
+  Dynamic Documents for R. R package version 2.3. URL https://rmarkdown.rstudio.com.
+
+  Yihui Xie and J.J. Allaire and Garrett Grolemund (2018). R Markdown: The Definitive Guide.
+  Chapman and Hall/CRC. ISBN 9781138359338. URL https://bookdown.org/yihui/rmarkdown.
+
